@@ -1,0 +1,34 @@
+
+skeleton.png
+size: 282,196
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Cube_Character
+  rotate: false
+  xy: 2, 2
+  size: 162, 192
+  orig: 192, 192
+  offset: 24, 0
+  index: -1
+Cube_Character_Foot
+  rotate: false
+  xy: 232, 146
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Cube_Character_Hand
+  rotate: false
+  xy: 232, 112
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Gun
+  rotate: true
+  xy: 166, 18
+  size: 176, 64
+  orig: 192, 128
+  offset: 8, 28
+  index: -1
