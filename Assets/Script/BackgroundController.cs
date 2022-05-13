@@ -23,24 +23,28 @@ public class BackgroundController : MonoBehaviour
 
     private void Start()
     {
+        //图片的宽高、单位像素量等信息，暂时没用上
         this.height = (int)this.gameObject.GetComponent<SpriteRenderer>().sprite.rect.height;
         this.width = (int)this.gameObject.GetComponent<SpriteRenderer>().sprite.rect.width;
         this.pixPerUnit = this.gameObject.GetComponent<SpriteRenderer>().sprite.pixelsPerUnit;
+
+        //获取材质，设置Shader参数
         mt = this.gameObject.GetComponent<SpriteRenderer>().material;
-        mt.SetVector(
-            "_Speed",
-            new Vector4(this.FirstSpeed, this.SecondSpeed, this.ThirdSpeed, this.FouthSpeed)
-        );
+
+        //设置各个图层
+        //其中this.gameobject中的SpriteRender设置的Sprite图片作为静止的最底层背景
+        //subLayer[0]是向上一层的背景，subLayer[1]是再向上一层的背景，以此类推
         mt.SetTexture("_SecondTex", subLayers[0]);
         mt.SetTexture("_ThirdTex", subLayers[1]);
         mt.SetTexture("_FourthTex", subLayers[2]);
 
-        //MyCamera cmr = (MyCamera)MyCamera.instance;
-        //Vector2 camPos = cmr.transform.localPosition;
-        //Vector2 selfPos = this.gameObject.transform.localPosition;
+        //设置各个图层的偏移速度
+        //FirstSpeed对应subLayer[0]的移动，SecondSpeed对应subLayer[1]的移动
+        mt.SetVector(
+            "_Speed",
+            new Vector4(this.FirstSpeed, this.SecondSpeed, this.ThirdSpeed, this.FouthSpeed)
+        );
 
-        //float bottomLineGap = cmr.getBottomLine() - (selfPos.y - this.height / pixPerUnit / 2f);
-        //this.gameObject.transform.localPosition = new Vector2(camPos.x, selfPos.y + bottomLineGap);
     }
 
     private void Update()
