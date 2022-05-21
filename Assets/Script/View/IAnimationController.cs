@@ -9,31 +9,33 @@ public class IAnimationController
 
     protected string lastFrameState;
     protected string lastAdded = "";
-
+    private SpineAnimationSet animationSet;
    
+    public IAnimationController(SpineAnimationSet st)
+    {
+        this.animationSet = st;
+    }
+
     public virtual void save_lastFrame(string state)
     {
         this.lastFrameState = state;
     }
-    public TrackEntry setAnimation(SpineAnimatable target, AnimationReferenceAsset animation, bool loop, float timeScale = 1)
+    public TrackEntry setAnimation(SkeletonAnimation target, AnimationReferenceAsset animation, bool loop, float timeScale = 1)
     {
-        if (!animation.name.Equals(target.getCurrentAnimationName()))
+        if (!animation.name.Equals(target.AnimationName))
         {
-            TrackEntry entry = target.GetAnimatonState().SetAnimation(0, animation, loop);
-            target.setCurrentANimationName(animation.name);
+            TrackEntry entry = target.AnimationState.SetAnimation(0, animation, loop);
+            animationSet.animationState = animation.name;
             entry.TimeScale = timeScale;
             return entry;
         }
         return null;
     }
-    public void addAnimation(SpineAnimatable target, AnimationReferenceAsset animation, bool loop, float timeScale = 1)
+    public void addAnimation(SkeletonAnimation target, AnimationReferenceAsset animation, bool loop, float timeScale = 1)
     {
         if (this.lastAdded.Equals(animation.name)) return;
 
-        TrackEntry entry = target.GetAnimatonState().AddAnimation(0, animation, loop, 0);
-        entry.Start += (ent) => {
-            target.setCurrentANimationName(ent.Animation.Name);
-        };
+        TrackEntry entry = target.AnimationState.AddAnimation(0, animation, loop, 0);
         this.lastAdded = animation.name;
     }
 }

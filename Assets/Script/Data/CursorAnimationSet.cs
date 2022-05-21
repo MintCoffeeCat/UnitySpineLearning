@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
+using System.Collections;
 using Spine.Unity;
-using System.Collections.Generic;
-
-public class AssetPool : MonoBehaviour
+public class CursorAnimationSet : SpineAnimationSet
 {
-
-    public Dictionary<string,AnimationReferenceAsset> assets;
+    public AnimationReferenceAsset focus;
+    public AnimationReferenceAsset unfocus;
 
     // Use this for initialization
     void Start()
     {
+
     }
 
     // Update is called once per frame

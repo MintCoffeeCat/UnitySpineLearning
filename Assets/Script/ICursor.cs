@@ -7,10 +7,7 @@ public class ICursor : MonoBehaviour,SpineAnimatable
 {
     public string animationState = "";
     public SkeletonAnimation anim;
-    public AnimationReferenceAsset focus;
-    public AnimationReferenceAsset unfocus;
-    private IAnimationController animationController;
-    private Player player;
+    private CursorAnimationController animationController;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +15,11 @@ public class ICursor : MonoBehaviour,SpineAnimatable
         this.GetComponent<MeshRenderer>().sortingLayerName = "UI";
         Cursor.visible = false;
 
-        animationController = new IAnimationController();
+        CursorAnimationSet cursorSet = this.GetComponent<CursorAnimationSet>();
+        if (cursorSet)
+            animationController = new CursorAnimationController(anim, cursorSet);
+        else
+            Debug.LogError("光标指针对象没有设置光标动画集C#脚本：CursorAnimationSet");
     }
 
     private void Awake()
@@ -40,29 +41,16 @@ public class ICursor : MonoBehaviour,SpineAnimatable
         mouse.z = 0;
         this.transform.position = mouse;
     }
-
     private void checkFocus()
     {
-        if(this.player == null)
+        if (Input.GetButtonDown("Aim"))
         {
-            GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
-            if (player.Length == 0) return;
-
-            this.player = player[0].GetComponent<Player>();
-            if (this.player == null) return;
+            this.animationController.aimAnimation();
+            Debug.Log("Aim click");
         }
-
-
-        if(this.player.getInputState(InputState.AIM) == 1 && !this.animationState.Equals("Focus"))
-        {
-            this.animationController.setAnimation(this, this.focus,false);
-        }
-        else if(this.player.getInputState(InputState.AIM) != 1 && !this.animationState.Equals("Unfocus"))
-        {
-            this.animationController.setAnimation(this, this.unfocus, false);
-        }
+        else if(Input.GetButtonUp("Aim"))
+            this.animationController.idleAnimation();
     }
-
     string SpineAnimatable.getCurrentAnimationName()
     {
         return this.animationState;
